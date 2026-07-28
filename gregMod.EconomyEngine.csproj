@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>gregMod.EconomyEngine</AssemblyName>
+    <RootNamespace>greg.Mods.EconomyEngine</RootNamespace>
+    <Version>1.0.1</Version>
+    <Platforms>x64</Platforms>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MelonLoader" HintPath="references/MelonLoader.dll" Private="false" />
+    <Reference Include="Il2CppInterop.Runtime" HintPath="references/Il2CppInterop.Runtime.dll" Private="false" />
+    <Reference Include="Il2Cppmscorlib" HintPath="references/Il2Cppmscorlib.dll" Private="false" />
+    <Reference Include="Assembly-CSharp" HintPath="references/Assembly-CSharp.dll" Private="false" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="references/UnityEngine.CoreModule.dll" Private="false" />
+    <Reference Include="UnityEngine.IMGUIModule" HintPath="references/UnityEngine.IMGUIModule.dll" Private="false" />
+    <Reference Include="Unity.InputSystem" HintPath="references/Unity.InputSystem.dll" Private="false" />
+  </ItemGroup>
+</Project>
