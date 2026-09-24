@@ -21,3 +21,6 @@ Thumbs.db
 # Game assemblies (live symlinks into the Data Center install,
 # see ModRepositories/tools/sync-melon-assemblies.sh — never commit DLLs)
 references/*.dll
+
+# Game assemblies (live symlinks, see ModRepositories/tools/sync-melon-assemblies.sh — never commit DLLs)
+references/*.dll
