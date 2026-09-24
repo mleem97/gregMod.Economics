@@ -70,7 +70,7 @@ public static class DemandIntegration
         ToastDurationEntry = cat.CreateEntry("ToastDurationSeconds", 6f, "ToastDurationSeconds",
             "Anzeigedauer eines Toasts in Sekunden.");
 
-        // CronWorker Einstellungen
+        // CronWorker settings
         CronWorkerEnabledEntry = cat.CreateEntry("CronWorkerEnabled", false, "CronWorkerEnabled",
             "Aktiviert den Demand-CronWorker: erzeugt automatisch Nachfrage-Events in festen Intervallen.");
         CronIntervalEntry = cat.CreateEntry("CronIntervalSeconds", 180f, "CronIntervalSeconds",
@@ -93,10 +93,10 @@ public static class DemandIntegration
 
     public static void Update(float dt)
     {
-        // Standalone (ohne gregCore): nur Markt, keine Demand-Automatisierung.
+        // Standalone (without gregCore): market only, no demand automation.
         if (!GregHost.HasCore) return;
 
-        // Regularer Demand-Scan
+        // Regular demand scan
         float interval = 5f;
         try { if (ScanIntervalEntry != null) interval = ScanIntervalEntry.Value; } catch { }
         if (interval < 2f) interval = 2f;
@@ -112,9 +112,9 @@ public static class DemandIntegration
     }
 
     /// <summary>
-    /// Registriert den gregCore-CronWorker-Typ in IL2CPP, bevor er als Component
-    /// hinzugefuegt wird. Ohne Registrierung schlaegt AddComponent fehl und der
-    /// CronWorker bleibt dauerhaft kaputt.
+    /// Registers the gregCore CronWorker type in IL2CPP before it is added
+    /// as a component. Without registration, AddComponent fails and the
+    /// CronWorker stays permanently broken.
     /// </summary>
     private static void EnsureCronTypesRegistered()
     {
@@ -151,7 +151,7 @@ public static class DemandIntegration
             return;
         }
 
-        // CronWorker GameObject erstellen falls noetig
+        // Create CronWorker GameObject if needed
         if (_cronWorkerObj == null)
         {
             try
@@ -172,7 +172,7 @@ public static class DemandIntegration
 
         if (_cronWorker == null) return;
 
-        // Konfiguration anwenden
+        // Apply configuration
         try
         {
             float interval = 180f;
@@ -212,7 +212,7 @@ public static class DemandIntegration
 
     private static void OnCronDemandEvent(DemandEvent evt)
     {
-        // Toast je nach Shift-Art
+        // Toast depending on shift kind
         string msg = evt.Kind switch
         {
             DemandEventKind.Dip =>
@@ -227,8 +227,8 @@ public static class DemandIntegration
         };
         PushToast(msg);
 
-        // Scan ausloesen um den neuen Zustand zu erfassen (routet u.a.
-        // neue Dienste ein, wenn AutoRoute/AutoFeed aktiv sind)
+        // Trigger a scan to capture the new state (routes e.g.
+        // new services when AutoRoute/AutoFeed are active)
         Scan(false);
     }
 
@@ -244,9 +244,9 @@ public static class DemandIntegration
 
     private static void Scan(bool forcedDryRun, bool isTimer = false)
     {
-        // Idle-Skip: Timer-Scans ohne aktive Automatisierung sind reine
-        // Main-Thread-Last (Kundenscan + Log-Spam). Nur bei Bedarf scannen.
-        // HighEnd-Upkeep zaehlt als Automatisierung mit.
+        // Idle skip: timer scans without active automation are pure
+        // main-thread load (customer scan + log spam). Only scan when needed.
+        // HighEnd upkeep counts as automation too.
         if (isTimer && !forcedDryRun
             && !ReadFlag(AutoRouteEntry, false)
             && !ReadFlag(AutoFeedEntry, false)
@@ -335,8 +335,8 @@ public static class DemandIntegration
         PushToast(message);
     }
 
-    // Ein Peer ist beigetreten: Demand-Gedächtnis verwerfen und sofort neu
-    // bewerten, damit der neue Stand für alle gilt (Join-Konvergenz).
+    // A peer has joined: discard demand memory and re-evaluate immediately
+    // so the new state applies to everyone (join convergence).
     private static void OnPeerJoined()
     {
         try
@@ -360,7 +360,7 @@ public static class DemandIntegration
             if (ReadFlag(ToastsEnabledEntry, true))
                 greg.Mods.EconomyEngine.UI.MarketplaceUI.PushToast(message);
         }
-        catch { /* UI darf die Integration nie brechen */ }
+        catch { /* UI must never break the integration */ }
     }
 
     private static bool ReadFlag(MelonPreferences_Entry<bool> entry, bool fallback)

@@ -12,8 +12,8 @@ public static class MarketplaceManager
     public static float MarketPricePerIops { get; private set; } = 0.05f;
     private static float _marketUpdateTimer;
     private const float MarketTickInterval = 30f;
-    // Switch-Vollsuche ist teuer (iteriert alle Szenen-Objekte): max. 1x/120s.
-// Neubauten wirken mit Verzoegerung - akzeptiert, kein Lag dafuer.
+    // Full switch search is expensive (iterates all scene objects): max 1x/120s.
+// New builds take effect with a delay - accepted, no lag for that.
     private static float _switchCacheTime = -1e9f;
     private const float SwitchCacheTtl = 120f;
     private static readonly System.Collections.Generic.List<NetworkSwitch> _switchCache =
@@ -27,9 +27,9 @@ public static class MarketplaceManager
         _marketUpdateTimer += dt;
         if (_marketUpdateTimer < MarketTickInterval) return;
         _marketUpdateTimer = 0f;
-        // Kein Random-Walk mehr: Die NachfrageDynamik lebt in den Kunden
-        // (DemandShift via CronWorker), nicht in Preiswuerfeln. Multiplier
-        // konstant 1.0 = exaktes Defizit fuettern.
+        // No more random walk: demand dynamics live in the customers
+        // (DemandShift via CronWorker), not in price dice. Multiplier
+        // constant 1.0 = feed the exact deficit.
         GlobalDemandMultiplier = 1.0f;
         MarketPricePerIops = 0.05f;
         try
@@ -44,9 +44,9 @@ public static class MarketplaceManager
 
     private static void ProcessAutomaticSales()
     {
-        // Single-Writer im Multiplayer: Nur der Host schreibt Geld.
-        // Clients würden sonst gegen die Spiel-Syncs (XpDelta/Balance)
-        // doppelt gutschreiben. Standalone: immer Host (Solo).
+        // Single writer in multiplayer: only the host writes money.
+        // Clients would otherwise double-credit against the game syncs (XpDelta/Balance).
+        // Standalone: always host (solo).
         try
         {
             if (GregHost.HasCore)
@@ -55,10 +55,10 @@ public static class MarketplaceManager
             }
         }
         catch { }
-        // Direkter typisierter Zugriff statt FindObjectsOfType<MonoBehaviour>() +
-        // Reflection pro Komponente (hat den Main-Thread bei grossen Saves
-        // sekundenlang blockiert). NetworkSwitch.cableLinkSwitchPorts ist
-        // public API im aktuellen Spiel.
+        // Direct typed access instead of FindObjectsOfType<MonoBehaviour>() +
+        // reflection per component (which blocked the main thread for seconds
+        // on large saves). NetworkSwitch.cableLinkSwitchPorts is
+        // public API in the current game.
         float totalIops = 0f;
         try
         {
@@ -155,8 +155,8 @@ public static class MarketplaceManager
     }
 
     /// <summary>
-    /// Waehlt explizit die passende UpdateCoin-Ueberladung (2 oder 3 Parameter).
-    /// Wirft AmbiguousMatchException-sicher: kein blindes GetMethod mit types:null.
+    /// Explicitly selects the matching UpdateCoin overload (2 or 3 parameters).
+    /// AmbiguousMatchException-safe: no blind GetMethod with types:null.
     /// </summary>
     private static MethodInfo ResolveUpdateCoinMethod()
     {
@@ -170,7 +170,7 @@ public static class MarketplaceManager
             if (n == 2 && two == null) two = m;
             else if (n == 3 && three == null) three = m;
         }
-        // Neuere Spielversion bevorzugen (allowOverdraft), sonst Legacy.
+        // Prefer the newer game version (allowOverdraft), otherwise legacy.
         return three ?? two;
     }
 

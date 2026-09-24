@@ -45,8 +45,8 @@ public class EconomyEngineMod : MelonMod
         }
     }
 
-    // Mod-Vertrag + Tasten-HUD + Oeffner fuers F1-Hub. Nur mit gregCore
-    // aufrufen (eigene Methode wegen JIT-Trennung ohne gregCore-DLL).
+    // Mod contract + key HUD + opener for the F1 hub. Only call with gregCore
+    // (separate method for JIT isolation without the gregCore DLL).
     private static void RegisterCoreExtras()
     {
         try
@@ -119,7 +119,7 @@ public class EconomyEngineMod : MelonMod
         }
     }
 
-    // gregCore-SetOpen in eigener Methode (JIT-Trennung ohne gregCore-DLL).
+    // gregCore SetOpen in a separate method (JIT isolation without the gregCore DLL).
     private static void SetMarketOpen(bool open)
     {
         gregCore.UI.GregMenuRegistry.SetOpen("economy.marketplace", open);

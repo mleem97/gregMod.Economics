@@ -38,8 +38,8 @@ public sealed class MarketplaceUI : MonoBehaviour
     public static bool IsVisible => _instance != null && _instance._visible;
 
     /// <summary>
-    /// Registriert den UI-Typ in IL2CPP, bevor er als Component hinzugefuegt
-    /// wird. Ohne Registrierung schlaegt AddComponent fehl.
+    /// Registers the UI type in IL2CPP before it is added as a component.
+    /// Without registration, AddComponent fails.
     /// </summary>
     private static void EnsureTypesRegistered()
     {
